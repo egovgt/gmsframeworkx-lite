@@ -20,21 +20,10 @@ public class BottomNavDisable {
             shiftingMode.setAccessible(true);
             shiftingMode.setBoolean(menuView, false);
             shiftingMode.setAccessible(false);
-
-            for (int i = 0; i < menuView.getChildCount(); i++) {
-
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                //noinspection RestrictedApi
-//                item.setShiftingMode(false);
-                //noinspection RestrictedApi
-//                item.setChecked(item.getItemData().isChecked());
-
-
-            }
         } catch (NoSuchFieldException ex) {
-//            Log.ERROR("BottomNavForceTitle", "Unable to get shift mode field", ex);
+
         } catch (IllegalAccessException e) {
-//            Log.ERROR("BottomNavForceTitle", "Unable to change value of shift mode", e);
+
         }
     }
 }

@@ -8,4 +8,16 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="28" />
 
+    <application>
+        <provider
+            android:name="lib.gmsframeworkx.easyphotopicker.ExtendedFileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+    </application>
+
 </manifest>
