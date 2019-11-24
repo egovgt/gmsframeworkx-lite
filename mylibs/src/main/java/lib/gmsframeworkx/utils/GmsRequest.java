@@ -42,6 +42,20 @@ public class GmsRequest {
 
         Map<String, String> requestHeaders();
     }
+
+    public interface OnPostRawRequest{
+        void onPreExecuted();
+
+        void onSuccess(JSONObject response);
+
+        void onFailure(String error);
+
+        String requestParam();
+
+        Map<String, String> requestHeaders();
+    }
+
+
     public interface OnDownloadRequest{
         void onPreExecuted();
 
@@ -168,6 +182,59 @@ public class GmsRequest {
                 param = onPostRequest.requestParam();
                 Log.d("gmsParams "+URL, "requestParam: "+param);
                 return param;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return onPostRequest.requestHeaders();
+            }
+        };
+        RequestHandler.getInstance().addToRequestQueue(request, GmsStatic.DateInMilis()+URL);
+        onPostRequest.onPreExecuted();
+    }
+
+    public static void POSTRaw(final String URL, final Context context, final OnPostRawRequest onPostRequest){
+        StringRequest request = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("gmsResponse "+URL, "onResponse: "+response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            onPostRequest.onSuccess(jsonObject);
+                        } catch (JSONException e) {
+                            onPostRequest.onFailure(e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                GmsStatic.showGoTroError(context, error);
+                String errorCode = "1012";
+                if (error instanceof NetworkError) {
+                    errorCode = "1012";
+                } else if (error instanceof ServerError) {
+                    errorCode = "503";
+                } else if (error instanceof NoConnectionError) {
+                    errorCode = "1019";
+                } else if (error instanceof TimeoutError) {
+                    errorCode = "522";
+                }
+                onPostRequest.onFailure(errorCode);
+            }
+        }) {
+            /*@Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param;
+                param = onPostRequest.requestParam();
+                Log.d("gmsParams "+URL, "requestParam: "+param);
+                return param;
+            }*/
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String param = onPostRequest.requestParam();
+                return param.getBytes();
             }
 
             @Override
