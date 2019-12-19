@@ -131,7 +131,17 @@ public class GmsRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
                 GmsStatic.showGoTroError(context, error);
-                onGetRequest.onFailure(error.toString());
+                String errorCode = "1012";
+                if (error instanceof NetworkError) {
+                    errorCode = "1012";
+                } else if (error instanceof ServerError) {
+                    errorCode = "503";
+                } else if (error instanceof NoConnectionError) {
+                    errorCode = "1019";
+                } else if (error instanceof TimeoutError) {
+                    errorCode = "522";
+                }
+                onGetRequest.onFailure(errorCode);
             }
         }){
 
