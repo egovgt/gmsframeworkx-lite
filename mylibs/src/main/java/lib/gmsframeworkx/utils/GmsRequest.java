@@ -88,6 +88,8 @@ public class GmsRequest {
 
         void onFailure(String error);
 
+        Map<String, String> requestHeaders();
+
         Map<String, String> requestParam();
 
     }
@@ -342,6 +344,11 @@ public class GmsRequest {
                 onPostRequest.onFailure(errorCode);
             }
         }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return onPostRequest.requestHeaders();
+            }
+
             @Override
             protected Map<String, String> getParams() {
                 return onPostRequest.requestParam();
