@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--AvatarView-->
+    <declare-styleable name="AvatarView">
+        <attr name="av_border_color" format="color" />
+        <attr name="av_border_width" format="dimension" />
+        <attr name="av_text_size_percentage" format="integer" />
+    </declare-styleable>
+    <!--end of AvatarView-->
+
     <declare-styleable name="CircleIndicator">
         <attr name="ci_width" format="dimension"/>
         <attr name="ci_height" format="dimension"/>
